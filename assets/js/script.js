@@ -112,7 +112,17 @@ window.onload = function() {
     window.addEventListener('mousedown', startDrag);
     window.addEventListener('touchstart', startDrag, { passive: false });
     window.addEventListener('mousemove', moveDrag);
-    window.addEventListener('touchmove', moveDrag, { passive: false }); // Uncommented and fixed
+    window.addEventListener('touchmove', moveDrag, { passive: false });
     window.addEventListener('mouseup', endDrag);
     window.addEventListener('touchend', endDrag, { passive: false });
+
+    // Allow links to work on mobile by stopping propagation
+    document.querySelectorAll('.card__data .icon').forEach(link => {
+        link.addEventListener('touchstart', function(e) {
+            e.stopPropagation();
+        }, { passive: false });
+        link.addEventListener('touchend', function(e) {
+            e.stopPropagation();
+        }, { passive: false });
+    });
 };
