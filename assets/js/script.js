@@ -42,14 +42,16 @@ window.onload = function() {
     // Dragging functionality
     function startDrag(e) {
         if (activeTrack === null) return;
+        // Check if the touch target is the close button or its descendants
+        if (e.target.closest('.image-slider button')) return; // Skip preventDefault if on button
         let clientX;
         if (e.type === 'touchstart') {
-            clientX = e.touches[0].clientX; // Get X position from first touch
+            clientX = e.touches[0].clientX;
         } else {
-            clientX = e.clientX; // Use mouse X position
+            clientX = e.clientX;
         }
         activeTrack.dataset.mouseDownAt = clientX;
-        e.preventDefault(); // Prevent default behavior (e.g., scrolling)
+        e.preventDefault(); // Only prevent default for dragging, not button taps
     }
 
     function moveDrag(e) {
@@ -88,7 +90,7 @@ window.onload = function() {
     window.addEventListener('mousedown', startDrag);
     window.addEventListener('touchstart', startDrag, { passive: false });
     window.addEventListener('mousemove', moveDrag);
-    window.addEventListener('touchmove', moveDrag, { passive: false });
+    // window.addEventListener('touchmove', moveDrag, { passive: false });
     window.addEventListener('mouseup', endDrag);
     window.addEventListener('touchend', endDrag, { passive: false });
 };
