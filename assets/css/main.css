@@ -1218,6 +1218,11 @@ body.slider-active #main {
     animation: hide-data 0.3s forwards;
 }
 
+/* Add touch support for mobile */
+.card__data.visible {
+    animation: show-data 0.3s forwards;
+}
+
 /* Description Text */
 .card__description {
     display: block;
