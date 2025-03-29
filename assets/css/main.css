@@ -1327,10 +1327,44 @@ body.slider-active #main {
     background: rgba(255, 255, 255, 0.1);
 }
 /* Responsive Adjustments */
-@media screen and (max-width: 736px) {
+/* @media screen and (max-width: 736px) {
     .card__article {
         width: 30vmin;
         height: 42vmin;
         max-width: 200px;
+    }
+}  */
+
+
+@media screen and (max-width: 736px) {
+    .card__article {
+        width: 80vw;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    .card__img {
+        width: 100%;
+        height: 50vh;
+        object-fit: cover;
+        border-radius: 1.5rem 1.5rem 0 0;
+    }
+    .card__data {
+        position: static;
+        background-color: #fff;
+        padding: 1rem;
+        border-radius: 0 0 1.5rem 1.5rem;
+        opacity: 1;
+        transform: none;
+        animation: none;
+    }
+    .image-slider .image-track {
+        display: flex;
+        gap: 4vmin;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translate(0, -50%);
+        width: max-content;
     }
 }
