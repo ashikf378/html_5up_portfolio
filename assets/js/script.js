@@ -84,38 +84,6 @@ window.onload = function() {
         e.preventDefault(); // Prevent default behavior
     }
 
-
-    window.onmousedown = e => {
-        if (activeTrack === null) return;
-        activeTrack.dataset.mouseDownAt = e.clientX;
-    };
-
-    window.onmousemove = e => {
-        if (activeTrack === null) return;
-        if (activeTrack.dataset.mouseDownAt === "0") return;
-
-        const mouseDelta = parseFloat(activeTrack.dataset.mouseDownAt) - e.clientX;
-        const maxDelta = window.innerWidth;
-        const percentage = (mouseDelta / maxDelta) * -100;
-        let nextPercentage = parseFloat(activeTrack.dataset.prevPercentage) + percentage;
-
-        // Clamp between 0 and -100
-        nextPercentage = Math.max(Math.min(nextPercentage, 0), -100);
-
-        activeTrack.dataset.percentage = nextPercentage;
-
-        // Animate track movement
-        activeTrack.style.transform = `translate(${nextPercentage}%, -50%)`;
-    };
-
-    window.onmouseup = () => {
-        if (activeTrack === null) return;
-        activeTrack.dataset.mouseDownAt = "0";
-        activeTrack.dataset.prevPercentage = activeTrack.dataset.percentage || 0;
-    };
-
-
-
     // Attach event listeners for both mouse and touch events
     window.addEventListener('mousedown', startDrag);
     window.addEventListener('touchstart', startDrag, { passive: false });
