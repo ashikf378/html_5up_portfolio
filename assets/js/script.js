@@ -30,7 +30,7 @@ window.onload = function() {
         });
     });
 
-    // Add event listeners to close buttons
+    // Add event listeners to close buttons (click for desktop)
     document.querySelectorAll('.image-slider button').forEach(button => {
         button.addEventListener('click', function() {
             this.parentElement.classList.remove('active');
@@ -39,11 +39,35 @@ window.onload = function() {
         });
     });
 
+    // Add touchend listeners to close buttons (touch for mobile)
+    document.querySelectorAll('.image-slider button').forEach(button => {
+        button.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            this.parentElement.classList.remove('active');
+            document.body.classList.remove('slider-active');
+            activeTrack = null;
+        });
+    });
+
+    // Toggle card descriptions on touch for mobile
+    document.querySelectorAll('.card__article').forEach(card => {
+        card.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const data = this.querySelector('.card__data');
+            if (data.classList.contains('visible')) {
+                data.classList.remove('visible');
+                data.style.animation = 'hide-data 0.3s forwards';
+            } else {
+                data.classList.add('visible');
+                data.style.animation = 'show-data 0.3s forwards';
+            }
+        });
+    });
+
     // Dragging functionality
     function startDrag(e) {
         if (activeTrack === null) return;
-        // Check if the touch target is the close button or its descendants
-        if (e.target.closest('.image-slider button')) return; // Skip preventDefault if on button
+        if (e.target.closest('.image-slider button')) return;
         let clientX;
         if (e.type === 'touchstart') {
             clientX = e.touches[0].clientX;
@@ -51,7 +75,7 @@ window.onload = function() {
             clientX = e.clientX;
         }
         activeTrack.dataset.mouseDownAt = clientX;
-        e.preventDefault(); // Only prevent default for dragging, not button taps
+        e.preventDefault();
     }
 
     function moveDrag(e) {
@@ -60,9 +84,9 @@ window.onload = function() {
 
         let clientX;
         if (e.type === 'touchmove') {
-            clientX = e.touches[0].clientX; // Get X position from first touch
+            clientX = e.touches[0].clientX;
         } else {
-            clientX = e.clientX; // Use mouse X position
+            clientX = e.clientX;
         }
 
         const mouseDelta = parseFloat(activeTrack.dataset.mouseDownAt) - clientX;
@@ -70,27 +94,25 @@ window.onload = function() {
         const percentage = (mouseDelta / maxDelta) * -100;
         let nextPercentage = parseFloat(activeTrack.dataset.prevPercentage) + percentage;
 
-        // Clamp between 0 and -100
         nextPercentage = Math.max(Math.min(nextPercentage, 0), -100);
         activeTrack.dataset.percentage = nextPercentage;
 
-        // Apply transform
         activeTrack.style.transform = `translate(${nextPercentage}%, -50%)`;
-        e.preventDefault(); // Prevent default behavior
+        e.preventDefault();
     }
 
     function endDrag(e) {
         if (activeTrack === null) return;
         activeTrack.dataset.mouseDownAt = "0";
         activeTrack.dataset.prevPercentage = activeTrack.dataset.percentage || 0;
-        e.preventDefault(); // Prevent default behavior
+        e.preventDefault();
     }
 
     // Attach event listeners for both mouse and touch events
     window.addEventListener('mousedown', startDrag);
     window.addEventListener('touchstart', startDrag, { passive: false });
     window.addEventListener('mousemove', moveDrag);
-    // window.addEventListener('touchmove', moveDrag, { passive: false });
+    window.addEventListener('touchmove', moveDrag, { passive: false }); // Uncommented and fixed
     window.addEventListener('mouseup', endDrag);
     window.addEventListener('touchend', endDrag, { passive: false });
 };
