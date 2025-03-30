@@ -1334,7 +1334,7 @@ body.slider-active #main {
 /* Responsive Adjustments */
 @media screen and (max-width: 736px) {
     .card__article {
-        width: 65vw;
-        height: calc(65vw * 4 / 3);
+        width: 55vw;
+        height: calc(55vw * 4 / 3);
     }
 }
